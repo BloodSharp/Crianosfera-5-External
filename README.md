@@ -4,6 +4,7 @@ This is the external Open Source edition of Crianosfera 5.
 ## Features
 - Aimbot
 - ESP
+- ThirdPerson
 - Lua 5.4.2
     - Custom scripted Aimbot
     - Custom scripted ESP
