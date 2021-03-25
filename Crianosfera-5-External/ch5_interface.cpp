@@ -145,7 +145,6 @@ void CH5::Interface::Windows(bool* bHackEnabled)
 				{
 					if (ImGui::Button("Reload All Scripts"))
 					{
-						CH5::Lua::Hooks::RemoveAllCallbacks();
 						CH5::Lua::ReloadScripts();
 					}
 					if (CH5::Lua::Hooks::HasHook(CH5::Lua::CH5_CALLBACK_TYPE::CH5_CALLBACK_AT_RENDERING_MENU))

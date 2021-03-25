@@ -216,7 +216,6 @@ DECLSPEC_NOINLINE int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstanc
         /*HANDLE hUpdateThread =*/ //CreateThread(0, 0, (LPTHREAD_START_ROUTINE)CH5::Hooks::Update, 0, 0, 0);
 
         // Initialize Lua
-        CH5::Lua::Initialize();
         CH5::Lua::ReloadScripts();
 
         CH5::Settings::Initialize();

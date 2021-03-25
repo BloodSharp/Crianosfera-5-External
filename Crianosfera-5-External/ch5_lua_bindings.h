@@ -7,7 +7,7 @@ namespace CH5
 	namespace Lua
 	{
 		extern lua_State* pLuaState;
-		void Initialize();
+		bool Initialize();
 		void ReloadScripts();
 
 		enum CH5_CALLBACK_TYPE

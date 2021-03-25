@@ -599,13 +599,13 @@ void DefineLuaGlobal(lua_State* L, const char* name, int value)
 	lua_setglobal(L, name);
 }
 
-void CH5::Lua::Initialize()
+bool CH5::Lua::Initialize()
 {
 	CH5::Lua::pLuaState = luaL_newstate();
 	if (!CH5::Lua::pLuaState)
 	{
 		MessageBox(g_HackWnd, "Couldn't initialize Lua State", "Crianosfera Hack v5 - BloodSharp", MB_ICONERROR);
-		return;
+		return false;
 	}
 	luaL_openlibs(CH5::Lua::pLuaState);
 
@@ -872,12 +872,22 @@ void CH5::Lua::Initialize()
 	DefineLuaGlobal(CH5::Lua::pLuaState, "ImGuiColorEditFlags__DataTypeMask", ImGuiColorEditFlags__DataTypeMask);
 	DefineLuaGlobal(CH5::Lua::pLuaState, "ImGuiColorEditFlags__PickerMask", ImGuiColorEditFlags__PickerMask);
 	DefineLuaGlobal(CH5::Lua::pLuaState, "ImGuiColorEditFlags__InputMask", ImGuiColorEditFlags__InputMask);
+
+	return true;
 }
 
 void CH5::Lua::ReloadScripts()
 {
-	if (!CH5::Lua::pLuaState)
-		return;
+	if (CH5::Lua::pLuaState)
+	{
+		CH5::Lua::Hooks::RemoveAllCallbacks();
+		lua_close(CH5::Lua::pLuaState);
+		CH5::Lua::pLuaState = 0;
+	}
+	else if (!CH5::Lua::pLuaState)
+	{
+		CH5::Lua::Hooks::RemoveAllCallbacks();
+	}
 
 	WIN32_FIND_DATA ffd;
 	HANDLE hFind = INVALID_HANDLE_VALUE;
@@ -888,21 +898,24 @@ void CH5::Lua::ReloadScripts()
 		return;
 	}
 
-	do
+	if (CH5::Lua::Initialize())
 	{
-		if (!(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+		do
 		{
-			std::ostringstream luaFileNamePath;
-			luaFileNamePath << "Scripts\\" << ffd.cFileName;
-			if (luaL_dofile(CH5::Lua::pLuaState, luaFileNamePath.str().c_str()) == LUA_OK)
+			if (!(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
 			{
-				;
+				std::ostringstream luaFileNamePath;
+				luaFileNamePath << "Scripts\\" << ffd.cFileName;
+				if (luaL_dofile(CH5::Lua::pLuaState, luaFileNamePath.str().c_str()) == LUA_OK)
+				{
+					;
+				}
+				else
+				{
+					MessageBox(0, lua_tostring(CH5::Lua::pLuaState, -1), 0, MB_ICONERROR);
+				}
 			}
-			else
-			{
-				MessageBox(0, lua_tostring(CH5::Lua::pLuaState, -1), 0, MB_ICONERROR);
-			}
-		}
-	} while (FindNextFile(hFind, &ffd) != 0);
-	FindClose(hFind);
+		} while (FindNextFile(hFind, &ffd) != 0);
+		FindClose(hFind);
+	}
 }
