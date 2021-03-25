@@ -598,6 +598,12 @@ ImVec2 CH5::Lua::ImGui::GetDisplaySize()
 	return ::ImGui::GetIO().DisplaySize;
 }
 
+int CH5::Lua::ImGui::SliderInt(const char* szText, int iTheValue, int iMinimium, int iMaximum)
+{
+	::ImGui::SliderInt(szText, &iTheValue, iMinimium, iMaximum);
+	return iTheValue;
+}
+
 void DefineLuaGlobal(lua_State* L, const char* name, int value)
 {
 	lua_pushinteger(L, value);
@@ -736,6 +742,7 @@ bool CH5::Lua::Initialize()
 			.addFunction("IsItemClicked", &CH5::Lua::ImGui::IsItemClicked)
 			.addFunction("ColorEdit4", &CH5::Lua::ImGui::ColorEdit4)
 			.addFunction("GetDisplaySize", &CH5::Lua::ImGui::GetDisplaySize)
+			.addFunction("SliderInt", &CH5::Lua::ImGui::SliderInt)
 
 			.beginNamespace("Render")
 				.addFunction("AddRect", &CH5::Lua::ImGui::Render::AddRect)

@@ -57,6 +57,7 @@ namespace CH5
 			bool IsItemClicked(ImGuiMouseButton mouse_button);
 			ImColor ColorEdit4(const char* szColor, ImColor& color, int flags);
 			ImVec2 GetDisplaySize();
+			int SliderInt(const char* szText, int iTheValue, int iMinimium, int iMaximum);
 
 			namespace Render
 			{
