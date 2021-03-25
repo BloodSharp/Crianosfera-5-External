@@ -593,6 +593,11 @@ void CH5::Lua::ImGui::Render::AddRectFilled(ImVec2& v1, ImVec2& v2, ImColor& col
 	::ImGui::GetWindowDrawList()->AddRectFilled(v1, v2, color, rounding, corners);
 }
 
+ImVec2 CH5::Lua::ImGui::GetDisplaySize()
+{
+	return ::ImGui::GetIO().DisplaySize;
+}
+
 void DefineLuaGlobal(lua_State* L, const char* name, int value)
 {
 	lua_pushinteger(L, value);
@@ -730,6 +735,7 @@ bool CH5::Lua::Initialize()
 			.addFunction("PopItemWidth", &CH5::Lua::ImGui::PopItemWidth)
 			.addFunction("IsItemClicked", &CH5::Lua::ImGui::IsItemClicked)
 			.addFunction("ColorEdit4", &CH5::Lua::ImGui::ColorEdit4)
+			.addFunction("GetDisplaySize", &CH5::Lua::ImGui::GetDisplaySize)
 
 			.beginNamespace("Render")
 				.addFunction("AddRect", &CH5::Lua::ImGui::Render::AddRect)

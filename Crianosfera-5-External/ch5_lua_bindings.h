@@ -56,6 +56,7 @@ namespace CH5
 			void PopItemWidth();
 			bool IsItemClicked(ImGuiMouseButton mouse_button);
 			ImColor ColorEdit4(const char* szColor, ImColor& color, int flags);
+			ImVec2 GetDisplaySize();
 
 			namespace Render
 			{
